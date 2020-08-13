@@ -80,6 +80,10 @@ public:
     
     ETYPE getType() const { return MULDIV; }
     
+    virtual ~MulDiv() {
+        // all Expr* stored in the two lists are all borrowed references
+        // hence no need to free.
+    }
 private:
     ExprList mul_list_;
     ExprList div_list_;

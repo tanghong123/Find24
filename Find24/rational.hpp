@@ -72,6 +72,9 @@ public:
         return ret;
     }
     
+    int dividend() const { return dividend_; }
+    int divisor() const { return divisor_; }
+    
 private:
     int dividend_;
     int divisor_;

@@ -231,3 +231,13 @@ void Find24::buildSolutionMap() {
         selectK((int)elems_.size(), i, sb);
     }
 }
+
+void Find24::freeSolutionMap() {
+    for (auto& x : solution_) {
+        for (auto& y : x.second) {
+            for (auto& z : y.second) {
+                delete z;
+            }
+        }
+    }
+}

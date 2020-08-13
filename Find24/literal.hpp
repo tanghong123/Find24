@@ -19,15 +19,17 @@ public:
     
     int cmp(const Expr& other) const {
         const Literal* expr=dynamic_cast<const Literal*>(&other);
-        return value_-expr->value_;
+        assert(value_.divisor()==1);
+        assert(expr->value_.divisor()==1);
+        return value_.dividend()-expr->value_.dividend();
     }
     
     std::string toString(bool embed) const {
-        return std::to_string(value_);
+        return value_.toString();
     }
     
     Rational eval() const {
-        return Rational(value_);
+        return value_;
     }
     
     ETYPE getType() const {
@@ -35,6 +37,6 @@ public:
     }
     
 private:
-    int value_;
+    const Rational value_;
 };
 #endif /* literal_hpp */

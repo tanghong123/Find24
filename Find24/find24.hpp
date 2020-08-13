@@ -45,6 +45,10 @@ public:
     
     void run(bool debug);
     
+    ~Find24() {
+        freeSolutionMap();
+    }
+    
 private:
     int target_;
     NumVec elems_;
@@ -63,6 +67,7 @@ private:
     class ValueBuilder;
     class SolutionBuilder;
     void buildSolutionMap();
+    void freeSolutionMap();
 };
 
 #endif /* find24_h */

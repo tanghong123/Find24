@@ -87,6 +87,11 @@ public:
     
     ETYPE getType() const { return ADDSUB; }
     
+    virtual ~AddSub() {
+        // all Expr* stored in the two lists are all borrowed references
+        // hence no need to free.
+    }
+    
 private:
     ExprList add_list_;
     ExprList sub_list_;
