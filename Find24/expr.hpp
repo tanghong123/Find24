@@ -14,11 +14,11 @@
 
 enum ETYPE { LITERAL, ADDSUB, MULDIV };
 
+// All Expr are immutable after construction
 class Expr {
 public:
     virtual int cmp(const Expr& other) const = 0;
     virtual std::string toString(bool embed) const = 0;
-    virtual Rational eval() const = 0;
     virtual ETYPE getType() const = 0;
     virtual ~Expr() { }
 };

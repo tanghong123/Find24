@@ -28,7 +28,7 @@ void Find24::run(bool debug) {
     }
     
     for (auto& expr : it2->second) {
-        std::cout << expr->toString(false) << "=" << expr->eval().toString() << std::endl;
+        std::cout << expr->toString(false) << "=" << target_ << std::endl;
     }
     
     std::cout << "Found " << it2->second.size() << " solutions" << std::endl;

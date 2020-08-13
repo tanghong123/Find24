@@ -65,19 +65,6 @@ public:
         return ret;
     }
     
-    Rational eval() const {
-        Rational ret(1);
-        for (auto& expr : mul_list_) {
-            ret=ret*expr->eval();
-        }
-        
-        for (auto& expr : div_list_) {
-            ret=ret/expr->eval();
-        }
-        
-        return ret;
-    }
-    
     ETYPE getType() const { return MULDIV; }
     
     virtual ~MulDiv() {

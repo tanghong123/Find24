@@ -45,7 +45,7 @@ public:
     int cmp(const Expr& other) const {
         const AddSub* expr=dynamic_cast<const AddSub*>(&other);
         int ret=compareExprList(add_list_, expr->add_list_);
-        if (ret != 0) return ret;
+        if (ret!=0) return ret;
         return compareExprList(sub_list_, expr->sub_list_);
     }
     
@@ -71,20 +71,6 @@ public:
         return ret;
     }
     
-    Rational eval() const {
-        Rational ret(0);
-        
-        for (auto& expr : add_list_) {
-            ret=ret+expr->eval();
-        }
-        
-        for (auto& expr : sub_list_) {
-            ret=ret-expr->eval();
-        }
-        
-        return ret;
-    }
-    
     ETYPE getType() const { return ADDSUB; }
     
     virtual ~AddSub() {
@@ -95,7 +81,6 @@ public:
 private:
     ExprList add_list_;
     ExprList sub_list_;
-    
 };
 
 #endif /* addsub_hpp */
