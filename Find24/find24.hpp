@@ -37,13 +37,15 @@ typedef std::map<NumVec, ValExprMap> SolutionMap;
 // commutative or associative laws.
 class Find24 {
 public:
-    Find24(int target, std::vector<int> elems) :
+    Find24(int target, std::vector<int>& elems) :
     target_(target), elems_(elems)
     {
         std::sort(elems_.begin(), elems_.end());
     }
     
     void run(bool debug);
+    
+    std::vector<std::string> getExpr() const;
     
     ~Find24() {
         freeSolutionMap();

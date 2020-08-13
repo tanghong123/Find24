@@ -16,22 +16,6 @@
 
 void Find24::run(bool debug) {
     buildSolutionMap();
-    auto it=solution_.find(elems_);
-    if (it == solution_.end()) {
-        std::cerr << "Oops, something is wrong!" << std::endl;
-        return;
-    }
-    auto it2=it->second.find(Rational(target_));
-    if (it2 == it->second.end()) {
-        std::cerr << "Oops, no solution found!" << std::endl;
-        return;
-    }
-    
-    for (auto& expr : it2->second) {
-        std::cout << expr->toString(false) << "=" << target_ << std::endl;
-    }
-    
-    std::cout << "Found " << it2->second.size() << " solutions" << std::endl;
     
     if (debug) {
         std::cout << "counters: " <<
@@ -41,6 +25,26 @@ void Find24::run(bool debug) {
         ", exprcombos=" << counters_.exprcombos <<
         ", uniqexprs=" << counters_.uniqexprs << std::endl;
     }
+}
+
+std::vector<std::string> Find24::getExpr() const {
+    std::vector<std::string> ret;
+    auto it=solution_.find(elems_);
+    if (it == solution_.end()) {
+        std::cerr << "Oops, something is wrong!" << std::endl;
+        return ret;
+    }
+    
+    auto it2=it->second.find(Rational(target_));
+    if (it2 == it->second.end()) {
+        return ret;
+    }
+    
+    for (auto& expr : it2->second) {
+        ret.push_back(expr->toString(false));
+    }
+    
+    return ret;
 }
 
 void Find24::addLiterals()

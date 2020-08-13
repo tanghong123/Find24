@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <vector>
-#include "find24.hpp"
+#include "find24_simple.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -33,8 +33,15 @@ int main(int argc, char* argv[])
         elems.push_back(elem);
     }
     
-    Find24 runner(target, elems);
-    runner.run(true);
-    
+    std::vector<std::string> exprs = find24(target, elems);
+    if (exprs.empty()) {
+        std::cerr << "Oops, no solution found!" << std::endl;
+    } else {
+        std::cout << "Found " << exprs.size() << " solutions" << std::endl;
+        for (auto& expr : exprs) {
+            std::cout << expr << "=" << target << std::endl;
+        }
+    }
+
     return 0;
 }
