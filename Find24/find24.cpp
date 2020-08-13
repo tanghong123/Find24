@@ -34,8 +34,12 @@ void Find24::run(bool debug) {
     std::cout << "Found " << it2->second.size() << " solutions" << std::endl;
     
     if (debug) {
-        std::cout << "counters: loops=" << counters_.loops << ", exprs=" <<
-        counters_.exprs << std::endl;
+        std::cout << "counters: " <<
+        "subsets=" << counters_.subsets <<
+        ", combos=" << counters_.combos <<
+        ", valcombos=" << counters_.valcombos <<
+        ", exprcombos=" << counters_.exprcombos <<
+        ", uniqexprs=" << counters_.uniqexprs << std::endl;
     }
 }
 
@@ -51,6 +55,7 @@ void Find24::addLiterals()
             ValExprMap value;
             value.insert(make_pair(Rational(elem), exprs));
             solution_.insert(make_pair(key, value));
+            ++counters_.subsets;
         }
     }
 }
@@ -110,6 +115,7 @@ public:
         // neither s1_vals nor s2_vals should be empty
         for (auto& i : s1_vals) {
             for (auto& j : s2_vals) {
+                ++counters_.valcombos;
                 doPlus(i, j);
                 doMinus(i, j);
                 doMinus(j, i);
@@ -118,6 +124,7 @@ public:
                 doDivision(j, i);
             }
         }
+        ++counters_.combos;
     }
     
 private:
@@ -132,10 +139,10 @@ private:
         ExprSet& exprs=value_[result];
         for (auto& lexpr : left.second) {
             for (auto& rexpr : right.second) {
-                ++counters_.loops;
+                ++counters_.exprcombos;
                 std::unique_ptr<Expr> expr(new AddSub(lexpr, rexpr, false));
                 if (exprs.find(expr.get()) == exprs.end()) {
-                    ++counters_.exprs;
+                    ++counters_.uniqexprs;
                     exprs.insert(expr.release());
                 }
             }
@@ -150,10 +157,10 @@ private:
         ExprSet& exprs=value_[result];
         for (auto& lexpr : left.second) {
             for (auto& rexpr : right.second) {
-                ++counters_.loops;
+                ++counters_.exprcombos;
                 std::unique_ptr<Expr> expr(new AddSub(lexpr, rexpr, true));
                 if (exprs.find(expr.get()) == exprs.end()) {
-                    ++counters_.exprs;
+                    ++counters_.uniqexprs;
                     exprs.insert(expr.release());
                 }
             }
@@ -166,10 +173,10 @@ private:
         ExprSet& exprs=value_[result];
         for (auto& lexpr : left.second) {
             for (auto& rexpr : right.second) {
-                ++counters_.loops;
+                ++counters_.exprcombos;
                 std::unique_ptr<Expr> expr(new MulDiv(lexpr, rexpr, false));
                 if (exprs.find(expr.get()) == exprs.end()) {
-                    ++counters_.exprs;
+                    ++counters_.uniqexprs;
                     exprs.insert(expr.release());
                 }
             }
@@ -183,10 +190,10 @@ private:
         ExprSet& exprs=value_[result];
         for (auto& lexpr : left.second) {
             for (auto& rexpr : right.second) {
-                ++counters_.loops;
+                ++counters_.exprcombos;
                 std::unique_ptr<Expr> expr(new MulDiv(lexpr, rexpr, true));
                 if (exprs.find(expr.get()) == exprs.end()) {
-                    ++counters_.exprs;
+                    ++counters_.uniqexprs;
                     exprs.insert(expr.release());
                 }
             }
@@ -209,6 +216,7 @@ public:
                 selectK((int)key.size(), i, vb);
             }
             p_->solution_.insert(make_pair(key, value));
+            ++p_->counters_.subsets;
         }
     }
     

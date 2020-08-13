@@ -51,9 +51,12 @@ private:
     SolutionMap solution_;
     
     struct Counters {
-        int loops;
-        int exprs;
-        Counters() : loops(0), exprs(0) { }
+        int subsets;
+        int combos;
+        int valcombos;
+        int exprcombos;
+        int uniqexprs;
+        Counters() : subsets(0), combos(0), valcombos(0), exprcombos(0), uniqexprs(0) { }
     } counters_;
     
     void addLiterals();
