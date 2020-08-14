@@ -15,7 +15,8 @@
 
 class Literal : public Expr {
 public:
-    Literal(int val) : lit_(val) { }
+    Literal(int val) :
+    lit_(val), rank_(RankBuilder(LITERAL).getRank()) { }
     
     int cmp(const Expr& other) const {
         const Literal* expr=dynamic_cast<const Literal*>(&other);
@@ -30,7 +31,12 @@ public:
         return LITERAL;
     }
     
+    Rank getRank() const {
+        return rank_;
+    }
+    
 private:
     const int lit_;
+    Rank rank_;
 };
 #endif /* literal_hpp */

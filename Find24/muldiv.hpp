@@ -40,6 +40,8 @@ public:
                 addToList(mul_list_, right);
             }
         }
+        
+        rank_ = calcRank(MULDIV, mul_list_, div_list_);
     }
     
     int cmp(const Expr& other) const {
@@ -67,6 +69,8 @@ public:
     
     ETYPE getType() const { return MULDIV; }
     
+    Rank getRank() const { return rank_; }
+    
     virtual ~MulDiv() {
         // all Expr* stored in the two lists are all borrowed references
         // hence no need to free.
@@ -74,5 +78,6 @@ public:
 private:
     ExprList mul_list_;
     ExprList div_list_;
+    Rank rank_;
 };
 #endif /* muldiv_hpp */

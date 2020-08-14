@@ -40,6 +40,8 @@ public:
                 addToList(add_list_, right);
             }
         }
+        
+        rank_ = calcRank(ADDSUB, add_list_, sub_list_);
     }
     
     int cmp(const Expr& other) const {
@@ -73,6 +75,8 @@ public:
     
     ETYPE getType() const { return ADDSUB; }
     
+    Rank getRank() const { return rank_; }
+    
     virtual ~AddSub() {
         // all Expr* stored in the two lists are all borrowed references
         // hence no need to free.
@@ -81,6 +85,7 @@ public:
 private:
     ExprList add_list_;
     ExprList sub_list_;
+    Rank rank_;
 };
 
 #endif /* addsub_hpp */

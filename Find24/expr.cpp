@@ -10,9 +10,9 @@
 #include <stdio.h>
 
 int cmpExpr(const Expr* left, const Expr* right) {
-    ETYPE ltype=left->getType();
-    ETYPE rtype=right->getType();
-    if (ltype != rtype) return ltype-rtype;
+    Rank lrank=left->getRank();
+    Rank rrank=right->getRank();
+    if (lrank != rrank) return lrank-rrank;
     return left->cmp(*right);
 }
 
@@ -47,4 +47,42 @@ void mergeList(ExprList& to, const ExprList& from) {
             ++it_to;
         to.insert(it_to, expr);
     }
+}
+
+static const int BITS_FOR_ETYPE=2;
+static const int MAX_ELEMS=sizeof(Rank)*8/BITS_FOR_ETYPE-1;
+
+RankBuilder::RankBuilder(ETYPE etype) :
+rank_((Rank)etype << (BITS_FOR_ETYPE*MAX_ELEMS)),
+avail_(MAX_ELEMS) { }
+
+bool RankBuilder::addExprList(const ExprList& exprs)
+{
+    for (auto& expr : exprs) {
+        if (avail_>0) {
+            --avail_;
+            rank_|=((Rank)expr->getType())
+                << (avail_*BITS_FOR_ETYPE);
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool RankBuilder::addEOLMarker() {
+    if (avail_>0) {
+        --avail_; // assuming NONE==0
+        return true;
+    }
+    return false;
+}
+
+Rank calcRank(ETYPE etype, const ExprList& l1, const ExprList& l2) {
+    RankBuilder rb(etype);
+    if (!rb.addExprList(l1)) goto _done;
+    if (!rb.addEOLMarker()) goto _done;
+    rb.addExprList(l2);
+_done:
+    return rb.getRank();
 }
