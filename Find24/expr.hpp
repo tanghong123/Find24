@@ -26,9 +26,17 @@ public:
     virtual ~Expr() { }
 };
 
+int cmpExpr(const Expr* left, const Expr* right);
+
+class ExprCmp {
+public:
+    bool operator () (const Expr* left, const Expr* right) const {
+        return cmpExpr(left, right) < 0;
+    }
+};
+
 typedef std::list<const Expr*> ExprList;
 
-int cmpExpr(const Expr* left, const Expr* right);
 int compareExprList(const ExprList& left, const ExprList& right);
 void addToList(ExprList& list, const Expr* expr);
 void mergeList(ExprList& to, const ExprList& from);

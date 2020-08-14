@@ -16,13 +16,6 @@
 #include "rational.hpp"
 #include "expr.hpp"
 
-class ExprCmp {
-public:
-    bool operator () (const Expr* left, const Expr* right) const {
-        return cmpExpr(left, right) < 0;
-    }
-};
-
 // elems must be sorted in ascending order, could have duplicated elems
 typedef std::vector<int> NumVec;
 typedef std::set<Expr*, ExprCmp> ExprSet;
