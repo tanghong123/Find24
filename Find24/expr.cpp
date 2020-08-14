@@ -62,7 +62,7 @@ bool RankBuilder::addExprList(const ExprList& exprs)
         if (avail_>0) {
             --avail_;
             rank_|=((Rank)expr->getType())
-                << (avail_*BITS_FOR_ETYPE);
+            << (avail_*BITS_FOR_ETYPE);
         } else {
             return false;
         }

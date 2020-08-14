@@ -177,7 +177,7 @@ private:
     {
         Rational result=left.first - right.first;
         if (result < Rational(0)) return;
-
+        
         if ( (constraint_) && (constraint_->find(result)==constraint_->end()) )
             return;
         
@@ -304,12 +304,12 @@ public:
             }
             sum.push_back(eelems_[sel[i]]);
         }
-
+        
         while (ck_index < ckey_.size()) {
             sum.push_back(ckey_[ck_index]);
             ++ck_index;
         }
-
+        
         const ValSet& sum_constraint=(constraint_.find(sum))->second;
         const ValExprMap& other_values=(solution_.find(other))->second;
         
