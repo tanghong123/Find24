@@ -12,7 +12,7 @@
 int cmpExpr(const Expr* left, const Expr* right) {
     Rank lrank=left->getRank();
     Rank rrank=right->getRank();
-    if (lrank != rrank) return lrank-rrank;
+    if (lrank != rrank) return (lrank>rrank)?1:-1;
     return left->cmp(*right);
 }
 
@@ -53,7 +53,7 @@ static const int BITS_FOR_ETYPE=2;
 static const int MAX_ELEMS=sizeof(Rank)*8/BITS_FOR_ETYPE-1;
 
 RankBuilder::RankBuilder(ETYPE etype) :
-rank_((Rank)etype << (BITS_FOR_ETYPE*MAX_ELEMS)),
+rank_(((Rank)etype) << (BITS_FOR_ETYPE*MAX_ELEMS)),
 avail_(MAX_ELEMS) { }
 
 bool RankBuilder::addExprList(const ExprList& exprs)
