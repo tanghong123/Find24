@@ -13,7 +13,8 @@
 int main(int argc, char* argv[])
 {
     if (argc<3) {
-        std::cerr << "Usage: " << argv[0] << " <target> <n1> <n2> ... " << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <target> <n1> <n2> ... "
+        << std::endl;
         return -1;
     }
     
@@ -42,6 +43,6 @@ int main(int argc, char* argv[])
             std::cout << expr << "=" << target << std::endl;
         }
     }
-
+    
     return 0;
 }

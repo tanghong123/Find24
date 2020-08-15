@@ -6,8 +6,8 @@
 //  Copyright © 2020 Hong Tang. All rights reserved.
 //
 
-#ifndef rational_h
-#define rational_h
+#ifndef rational_hpp
+#define rational_hpp
 
 #include <assert.h>
 #include <string>
@@ -109,4 +109,4 @@ private:
     }
 };
 
-#endif /* rational_h */
+#endif /* rational_hpp */

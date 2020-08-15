@@ -6,8 +6,8 @@
 //  Copyright © 2020 Hong Tang. All rights reserved.
 //
 
-#ifndef find24_h
-#define find24_h
+#ifndef find24_hpp
+#define find24_hpp
 
 #include <vector>
 #include <set>
@@ -40,7 +40,7 @@ public:
     
     void run(bool debug);
     
-    std::vector<std::string> getExpr() const;
+    std::vector<std::string> getExprs() const;
     
     ~Find24() {
         freeSolutionMap();
@@ -62,7 +62,8 @@ private:
         int csubsets;
         int ccombos;
         int cvalcombos;
-        Counters() : subsets(0), combos(0), newvalues(0), valcombos(0), exprcombos(0), uniqexprs(0), csubsets(0), ccombos(0), cvalcombos(0) { }
+        Counters() : subsets(0), combos(0), newvalues(0), valcombos(0),
+        exprcombos(0), uniqexprs(0), csubsets(0), ccombos(0), cvalcombos(0) { }
     } counters_;
     
     void addLiterals();
@@ -75,4 +76,4 @@ private:
     void freeSolutionMap();
 };
 
-#endif /* find24_h */
+#endif /* find24_hpp */

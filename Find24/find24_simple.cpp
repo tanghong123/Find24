@@ -12,6 +12,6 @@
 std::vector<std::string> find24(int target, std::vector<int>& elems)
 {
     Find24 helper(target, elems);
-    helper.run(true);
-    return helper.getExpr();
+    helper.run(true); // show debugging statistics
+    return helper.getExprs();
 }

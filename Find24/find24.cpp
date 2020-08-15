@@ -10,6 +10,7 @@
 #include "literal.hpp"
 #include "addsub.hpp"
 #include "muldiv.hpp"
+#include "selectk.hpp"
 
 #include <iostream>
 #include <memory>
@@ -27,11 +28,12 @@ void Find24::run(bool debug) {
         "uniqexprs=" << counters_.uniqexprs << std::endl <<
         "csubsets=" << counters_.csubsets << std::endl <<
         "ccombos=" << counters_.ccombos << std::endl <<
-        "cvalcombos=" << counters_.cvalcombos << std::endl;
+        "cvalcombos=" << counters_.cvalcombos << std::endl <<
+        std::endl;
     }
 }
 
-std::vector<std::string> Find24::getExpr() const {
+std::vector<std::string> Find24::getExprs() const {
     std::vector<std::string> ret;
     auto it=solution_.find(elems_);
     if (it == solution_.end()) {
@@ -74,34 +76,9 @@ void Find24::addRootConstraint() {
     constraint_.insert(make_pair(elems_, value));
 }
 
-template<typename Op>
-void selectK(int n, int k, Op op)
-{
-    int selection[k];
-    int index=0;
-    selection[0]=-1;
-    while (index>=0) {
-        ++selection[index];
-        int elemNeeded=k-index-1;
-        if (selection[index] + elemNeeded >= n) {
-            --index;
-            continue;
-        }
-        
-        for (int i=index+1; i<k; ++i) {
-            selection[i]=selection[i-1]+1;
-        }
-        index=k-1;
-        
-        do {
-            op(selection, k);
-            ++selection[index];
-        } while (selection[index] < n);
-        --index;
-    }
-}
 
-static void splitVec(const NumVec& from, int sel[], int k, NumVec& s1, NumVec& s2)
+static void splitVec(const NumVec& from, int sel[], int k, NumVec& s1,
+                     NumVec& s2)
 {
     int index=0;
     for (int i=0; i<from.size(); ++i) {
@@ -150,7 +127,8 @@ private:
     const ValSet* constraint_;
     Counters& counters_;
     
-    void doPlus(const ValExprMap::value_type& left, const ValExprMap::value_type& right)
+    void doPlus(const ValExprMap::value_type& left,
+                const ValExprMap::value_type& right)
     {
         Rational result=left.first + right.first;
         if ( (constraint_) && (constraint_->find(result)==constraint_->end()) )
@@ -173,7 +151,8 @@ private:
         }
     }
     
-    void doMinus(const ValExprMap::value_type& left, const ValExprMap::value_type& right)
+    void doMinus(const ValExprMap::value_type& left,
+                 const ValExprMap::value_type& right)
     {
         Rational result=left.first - right.first;
         if (result < Rational(0)) return;
@@ -201,7 +180,8 @@ private:
         }
     }
     
-    void doMultiple(const ValExprMap::value_type& left, const ValExprMap::value_type& right)
+    void doMultiple(const ValExprMap::value_type& left,
+                    const ValExprMap::value_type& right)
     {
         Rational result=left.first * right.first;
         if ( (constraint_) && (constraint_->find(result)==constraint_->end()) )
@@ -225,7 +205,8 @@ private:
         }
     }
     
-    void doDivision(const ValExprMap::value_type& left, const ValExprMap::value_type& right)
+    void doDivision(const ValExprMap::value_type& left,
+                    const ValExprMap::value_type& right)
     {
         if (right.first == Rational(0)) return;
         Rational result=left.first / right.first;
@@ -287,18 +268,23 @@ private:
 
 class Find24::CVBuilder {
 public:
-    CVBuilder(const NumVec& ckey, const NumVec& eelems, ValSet& value, const ConstraintMap& constraint, const SolutionMap& solution, Counters& counters) :
-    ckey_(ckey), eelems_(eelems), value_(value), constraint_(constraint), solution_(solution), counters_(counters) { }
+    CVBuilder(const NumVec& ckey, const NumVec& eelems, ValSet& value,
+              const ConstraintMap& constraint, const SolutionMap& solution,
+              Counters& counters) :
+    ckey_(ckey), eelems_(eelems), value_(value), constraint_(constraint),
+    solution_(solution), counters_(counters) { }
     
     void operator() (int* sel, int k) {
-        // we are trying to find the constraint for one of the operands (ckey) of the
-        // following equations: sum = ckey op other and sum = other op ckey, with the
-        // knowledge of the constraints for sum and the possible values of others.
+        // we are trying to find the constraint for one of the operands (ckey)
+        // of the following equations: (sum = ckey op other) and
+        // (sum = other op ckey), with the knowledge of the constraints for sum
+        // and the possible values of others.
         NumVec sum, other;
         int ck_index=0;
         for (int i=0; i<k; ++i) {
             other.push_back(eelems_[sel[i]]);
-            while ( (ck_index < ckey_.size()) && (ckey_[ck_index]<=eelems_[sel[i]]) ) {
+            while ( (ck_index < ckey_.size()) &&
+                   (ckey_[ck_index]<=eelems_[sel[i]]) ) {
                 sum.push_back(ckey_[ck_index]);
                 ++ck_index;
             }
@@ -372,7 +358,8 @@ public:
         splitVec(p_.elems_, sel, k, eelems, ckey);
         if (p_.constraint_.find(ckey) == p_.constraint_.end()) {
             ValSet value;
-            CVBuilder cvb(ckey, eelems, value, p_.constraint_, p_.solution_, p_.counters_);
+            CVBuilder cvb(ckey, eelems, value, p_.constraint_, p_.solution_,
+                          p_.counters_);
             for (int i=1; i<=(int)eelems.size(); ++i) {
                 selectK((int)eelems.size(), i, cvb);
             }

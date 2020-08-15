@@ -6,8 +6,8 @@
 //  Copyright © 2020 Hong Tang. All rights reserved.
 //
 
-#ifndef expr_h
-#define expr_h
+#ifndef expr_hpp
+#define expr_hpp
 
 #include "rational.hpp"
 #include <list>
@@ -54,4 +54,4 @@ private:
 
 Rank calcRank(ETYPE etype, const ExprList& l1, const ExprList& l2);
 
-#endif /* expr_h */
+#endif /* expr_hpp */
