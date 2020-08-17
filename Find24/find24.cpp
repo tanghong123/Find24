@@ -381,7 +381,7 @@ void Find24::buildSolutionMap() {
     
     addRootConstraint();
     ConstraintBuilder cb(*this);
-    for (int i=1; i<=elems_.size()/2; ++i) {
+    for (int i=1; i<=(elems_.size()+1)/2; ++i) {
         selectK((int)elems_.size(), i, cb);
     }
     
