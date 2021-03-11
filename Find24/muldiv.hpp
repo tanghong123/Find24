@@ -16,7 +16,7 @@
 class MulDiv : public Expr {
 public:
     MulDiv(const Expr* left, const Expr* right, bool isDiv) {
-        if (left->getType() == MULDIV) {
+        if (left->getType() == ExprType::MULDIV) {
             const MulDiv* expr=dynamic_cast<const MulDiv*>(left);
             mul_list_=expr->mul_list_;
             div_list_=expr->div_list_;
@@ -24,7 +24,7 @@ public:
             mul_list_.push_back(left);
         }
         
-        if (right->getType() == MULDIV) {
+        if (right->getType() == ExprType::MULDIV) {
             const MulDiv* expr=dynamic_cast<const MulDiv*>(right);
             if (isDiv) {
                 mergeList(mul_list_, expr->div_list_);
@@ -41,7 +41,7 @@ public:
             }
         }
         
-        rank_ = calcRank(MULDIV, mul_list_, div_list_);
+        rank_ = calcRank(ExprType::MULDIV, mul_list_, div_list_);
     }
     
     int cmp(const Expr& other) const {
@@ -67,7 +67,7 @@ public:
         return ret;
     }
     
-    ETYPE getType() const { return MULDIV; }
+    ExprType getType() const { return ExprType::MULDIV; }
     
     Rank getRank() const { return rank_; }
     

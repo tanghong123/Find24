@@ -52,7 +52,7 @@ void mergeList(ExprList& to, const ExprList& from) {
 static const int BITS_FOR_ETYPE=2;
 static const int MAX_ELEMS=sizeof(Rank)*8/BITS_FOR_ETYPE-1;
 
-RankBuilder::RankBuilder(ETYPE etype) :
+RankBuilder::RankBuilder(ExprType etype) :
 rank_(((Rank)etype) << (BITS_FOR_ETYPE*MAX_ELEMS)),
 avail_(MAX_ELEMS) { }
 
@@ -78,7 +78,7 @@ bool RankBuilder::addEOLMarker() {
     return false;
 }
 
-Rank calcRank(ETYPE etype, const ExprList& l1, const ExprList& l2) {
+Rank calcRank(ExprType etype, const ExprList& l1, const ExprList& l2) {
     RankBuilder rb(etype);
     if (!rb.addExprList(l1)) goto _done;
     if (!rb.addEOLMarker()) goto _done;

@@ -16,7 +16,7 @@
 class AddSub : public Expr {
 public:
     AddSub(const Expr* left, const Expr* right, bool isSub) {
-        if (left->getType() == ADDSUB) {
+        if (left->getType() == ExprType::ADDSUB) {
             const AddSub* expr=dynamic_cast<const AddSub*>(left);
             add_list_=expr->add_list_;
             sub_list_=expr->sub_list_;
@@ -24,7 +24,7 @@ public:
             add_list_.push_back(left);
         }
         
-        if (right->getType() == ADDSUB) {
+        if (right->getType() == ExprType::ADDSUB) {
             const AddSub* expr=dynamic_cast<const AddSub*>(right);
             if (isSub) {
                 mergeList(add_list_, expr->sub_list_);
@@ -41,7 +41,7 @@ public:
             }
         }
         
-        rank_ = calcRank(ADDSUB, add_list_, sub_list_);
+        rank_ = calcRank(ExprType::ADDSUB, add_list_, sub_list_);
     }
     
     int cmp(const Expr& other) const {
@@ -73,7 +73,7 @@ public:
         return ret;
     }
     
-    ETYPE getType() const { return ADDSUB; }
+    ExprType getType() const { return ExprType::ADDSUB; }
     
     Rank getRank() const { return rank_; }
     

@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
         elems.push_back(elem);
     }
     
-    std::vector<std::string> exprs = find24(target, elems);
+    auto exprs = find24(target, elems);
     if (exprs.empty()) {
         std::cerr << "Oops, no solution found!" << std::endl;
     } else {

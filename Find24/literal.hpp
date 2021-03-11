@@ -16,7 +16,7 @@
 class Literal : public Expr {
 public:
     Literal(int val) :
-    lit_(val), rank_(RankBuilder(LITERAL).getRank()) { }
+    lit_(val), rank_(RankBuilder(ExprType::LITERAL).getRank()) { }
     
     int cmp(const Expr& other) const {
         const Literal* expr=dynamic_cast<const Literal*>(&other);
@@ -27,8 +27,8 @@ public:
         return std::to_string(lit_);
     }
     
-    ETYPE getType() const {
-        return LITERAL;
+    ExprType getType() const {
+        return ExprType::LITERAL;
     }
     
     Rank getRank() const {

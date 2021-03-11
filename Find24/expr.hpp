@@ -12,7 +12,7 @@
 #include "rational.hpp"
 #include <list>
 
-enum ETYPE { NONE, LITERAL, ADDSUB, MULDIV };
+enum class ExprType { NONE, LITERAL, ADDSUB, MULDIV };
 
 typedef uint32_t Rank;
 
@@ -21,7 +21,7 @@ class Expr {
 public:
     virtual int cmp(const Expr& other) const = 0;
     virtual std::string toString(bool embed) const = 0;
-    virtual ETYPE getType() const = 0;
+    virtual ExprType getType() const = 0;
     virtual Rank getRank() const = 0;
     virtual ~Expr() { }
 };
@@ -43,7 +43,7 @@ void mergeList(ExprList& to, const ExprList& from);
 
 class RankBuilder {
 public:
-    RankBuilder(ETYPE etype);
+    RankBuilder(ExprType etype);
     bool addExprList(const ExprList& exprs);
     bool addEOLMarker();
     Rank getRank() const { return rank_; }
@@ -52,6 +52,6 @@ private:
     int avail_;
 };
 
-Rank calcRank(ETYPE etype, const ExprList& l1, const ExprList& l2);
+Rank calcRank(ExprType etype, const ExprList& l1, const ExprList& l2);
 
 #endif /* expr_hpp */

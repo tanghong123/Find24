@@ -14,7 +14,7 @@
 
 class Rational {
 public:
-    Rational(int dividend, int divisor=1) :
+    Rational(int64_t dividend, int64_t divisor=1) :
     dividend_(dividend),
     divisor_(divisor)
     {
@@ -58,7 +58,8 @@ public:
     
     int cmp(const Rational& other) const
     {
-        return dividend_*other.divisor_-other.dividend_*divisor_;
+        int64_t result = dividend_*other.divisor_-other.dividend_*divisor_;
+        return (result == 0) ? 0 : (result > 0) ? 1 : -1;
     }
     
     std::string toString() const {
@@ -72,13 +73,13 @@ public:
         return ret;
     }
     
-    int dividend() const { return dividend_; }
-    int divisor() const { return divisor_; }
+    int64_t dividend() const { return dividend_; }
+    int64_t divisor() const { return divisor_; }
     
 private:
-    int dividend_;
-    int divisor_;
-    static int gdc(int left, int right) {
+    int64_t dividend_;
+    int64_t divisor_;
+    static int64_t gdc(int64_t left, int64_t right) {
         assert(right!=0);
         // making sure both parameters are non-negative
         if (left<0) left=-left;
@@ -90,7 +91,7 @@ private:
         if (left<right) std::swap(left, right);
         
         while ( (left%right) != 0) {
-            int tmp=left%right;
+            int64_t tmp=left%right;
             left=right;
             right=tmp;
         }
@@ -98,7 +99,7 @@ private:
     }
     
     void normalize() {
-        int x=gdc(dividend_, divisor_);
+        int64_t x=gdc(dividend_, divisor_);
         dividend_/=x;
         divisor_/=x;
         // make sure divisor is always positive
